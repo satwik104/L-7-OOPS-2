@@ -1,0 +1,131 @@
+class Polynomial {
+     public:
+    int *degCoeff;      // Name of your array (Don't change this)
+    int capacity;
+    // default constructor
+    Polynomial(){
+        this->degCoeff=new int[6];
+        this->capacity=5;
+    }
+    //parametirized constructors, called by below code
+    Polynomial (int capacity)
+    {
+        this->degcoeff=new int[capacity+1];
+        //updating the capacity value
+        this->capacity=capacity;
+    }
+    //copy constructor....its same as overloading of equal to operator but we do not do operator over loading here
+     Polynomial (Polynomial const &p)//to copy p into this
+     {
+        int *newdegcoeff=new int[p.capacity+1];
+             //now copying the content of p into this
+        for(int i=0;i<=p.capacity;i++)
+            newdegcoeff[i]=p.degCoeff[i];
+         //now redirecting degcoeff to newly formed array   
+        this->degCoeff=newdegcoeff;
+        //updating the capacity value
+        this->capacity=p.capacity;
+    }
+    //this will set the values in our array whoes index is the deg and value at that index is coeff
+    void setCoefficient(int deg, int coeff)
+    {
+		if(deg>capacity)
+        {
+            int newcapacity = deg;
+            int *newdeg = new int[newcapacity+1];
+            //now copy the previous data of degcoeff into newdegcoeff
+            for(int i=0; i<capacity; i++)
+                newdeg[i] = degcoeff[i];
+            //now redirect our degcoeff onto our new formed arrays by newdefcoeff
+            this->degCoeff=newdeg;
+            //updating the capacity
+            this->capacity=newcapacity;
+            //Set the new coeff
+            degCoeff[deg]=coeff;
+        }
+        else
+            degcoeff[deg] = coeff;
+    }
+    //now overloading the add operator for polynomials
+     Polynomial operator+(Polynomial const &P2)
+    {
+        //every time we write this...it represents the p1
+        int p3cap = max(this->capacity , p2.capacity);//geting the maximum capacity for the new polynomial
+        Polynomial p3(p3cap);//from here we go to parametrized constructors
+        //now forming the new polynomial
+        for(int i=0; i<=p3cap; i++)
+        {
+            if(i<=capacity && i<=p2.capacity)
+                p3.degcoeff[i] = this -> degcoeff[i] + p2.degcoeff[i];
+            //if p2 have less terms,so putting the p1 remaining terms
+            else if(i<=capacity)
+                p3.degCoeff[i] = this->degcoeff[i];
+            //if p1 have less terms,so putting the p2 remaining terms
+            else
+                p3.degCoeff[i] = p2.degcoeff[i];
+        }
+        return p3;
+    }
+    
+    //now overloading the substraction operator of polynomials
+     Polynomial operator-(Polynomial const &P2)
+    {
+        //every time we write this...it represents the p1
+        int p3cap = max(this->capacity , p2.capacity);//geting the maximum capacity for the resultant polynomial that is p3
+        Polynomial p3(p3cap);//from here we go to parametrized constructors
+        //now forming the new polynomial
+        for(int i=0; i<=p3cap; i++)
+        {
+            if(i<=capacity && i<=p2.capacity)
+                p3.degcoeff[i] = this -> degcoeff[i] - p2.degcoeff[i];
+            //if p2 have less terms,so putting the p1 remaining terms
+            else if(i<=capacity)
+                p3.degCoeff[i] = this->degcoeff[i];
+            //if p1 have less terms,so putting the p2 remaining terms
+            else
+                p3.degCoeff[i] = -p2.degcoeff[i];//we are substracting so we put - symbol before terms
+        }
+        return p3;
+    }
+   //now overloading the multiply operator
+    Polynomial operator*(Polynomial const &p2)
+    {
+        //every time we write this...it represents the p1
+        int p3cap = this->capacity + p2.capacity;//geting the value of capacity for the resultant polynomial that is p3
+        Polynomial p3(p3cap);//from here we go to parametrized constructors
+        //now forming up the p3 polynomial by multiplying the terms
+         for(int i=0;i<=this->capacity;i++)
+         {
+            for(int j=0;j<=P2.capacity;j++)
+            {
+                P3.degCoeff[i+j]+=this->degCoeff[i]*P2.degCoeff[j];
+            }       
+        }
+        return P3;
+    }
+    //now overloading the equal to operator
+    void operator=(Polynomial const &p)//to copy p into this
+    {
+        int *newdegcoeff = new int[p.capacity+1];
+        //now copying the content of p into this
+        for(int i=0; i<p.capacity; i++)
+        {
+            newdegcoeff[i]=p.degcoeff[i];
+        }
+        //now redirecting degcoeff to newly formed array
+        this->degcoeff=newdegcoeff;
+        //updating the capacity value
+        this->capacity=p.capacity;
+    }
+    //now writing the print function
+    void print()
+    {
+         for(int i=0;i<=this->capacity;i++)
+         {
+            if(degCoeff[i]!=0)
+                //x is not for multiply...but representing the alphabet
+                cout<<degCoeff[i]<<"x"<<i<<" ";//formate which is asked of the polynomial
+        }
+        cout<<endl;
+    }
+};
